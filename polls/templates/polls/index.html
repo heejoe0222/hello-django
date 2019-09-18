@@ -1,0 +1,21 @@
+{# django templates 주석 표시 #}
+{# html에서 파이썬 문법 활용 => {% %}로 감싸주기 #}
+
+{% if latest_question_list %}
+  <ul>
+  {% for question in latest_question_list %}
+    <li>
+      {% comment %}
+       # <a href="/polls/{{question.id}}/">
+       # polls.urls의 path에서 이름 정의 -> 위의 하드코딩 대신 {% url %}로 표현가능
+      {% endcomment %}
+
+      <a href="{% url 'polls:detail' question.id %}">
+        {{ question.question_text }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <<p>No polls are available.</p>
+{% endif %}

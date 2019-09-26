@@ -22,7 +22,7 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self):
-        return self.pub_date >= kor_now - datetime.timedelta(days=1)
+        return kor_now - datetime.timedelta(days=1) <= self.pub_date <= kor_now
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

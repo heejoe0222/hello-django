@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from django.db.models import F
 from .models import Question, Choice
@@ -12,11 +13,15 @@ class IndexView(generic.ListView): ## ListView -> objct 목록 표시
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte = timezone.localtime()).order_by('-pub_date')[:5]
+        #gt: greater than, gte:greater than or equal to, lt: less than, lte: Less than or equal to
 
 class DetailView(generic.DetailView): ## DetailView -> 특정 object에 대한 세부 정보 페이지 표시
     model = Question
     template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.localtime())
 
 class ResultsView(generic.DetailView):
     model = Question

@@ -76,8 +76,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # mysql경우 need a DB API driver like mysqlclient and change ENGINE to 'django.db.backends.mysql'
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), #user, password, host 등의 추가 설정 필요
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                # 'ENGINE': 'django.db.backends.mysql',
+                # 'NAME': 'hello_django',
+                # 'USER':'root',
+                # 'PASSWORD': '',
+                # 'HOST': '127.0.0.1',
+                # 'PORT':'3306',
     }
 }
 

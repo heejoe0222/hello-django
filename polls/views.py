@@ -12,20 +12,25 @@ class IndexView(generic.ListView): ## ListView -> objct 목록 표시
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
+
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte = timezone.localtime()).order_by('-pub_date')[:5]
         #gt: greater than, gte:greater than or equal to, lt: less than, lte: Less than or equal to
+
 
 class DetailView(generic.DetailView): ## DetailView -> 특정 object에 대한 세부 정보 페이지 표시
     model = Question
     template_name = 'polls/detail.html'
 
+
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte=timezone.localtime())
+
 
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

@@ -6,7 +6,7 @@ Django tutorial 시도해보기 :sunglasses:
 
 
 ## part1
-
+### 프로젝트 및 앱 생성
 * 개발서버 동작
 
   로컬(127.0.0.1:8000)에서 접속 가능하다
@@ -33,7 +33,7 @@ Django tutorial 시도해보기 :sunglasses:
 
 ---
 ## part2
-
+### 데이터베이스 작업
 * 데이터베이스 셋업
 
   mysite/settings.py에서 sqlite3로 설정
@@ -45,8 +45,9 @@ Django tutorial 시도해보기 :sunglasses:
       }
   }
   ```
-  > mysql경우 [mysqlclient](https://pypi.org/project/mysqlclient/) 같은 DB API driver를 필요로 하고 'django.db.backends.mysql'로 바꿔줘야 함  
-  > user, password, host 등의 추가 설정 필요
+  * mysql경우 [mysqlclient](https://pypi.org/project/mysqlclient/) 같은 DB API driver를 필요로 하고 'django.db.backends.mysql'로 바꿔줘야 함  
+  * user, password, host 등의 추가 설정 필요
+  * mysql에서 데이터베이스 생성(create) 후 name = 'DB명' 추가해준다
 
 * 타임존 설정
 
@@ -105,7 +106,7 @@ Django tutorial 시도해보기 :sunglasses:
   ```
 ---
 ## part3
-
+### 뷰(view) 추가
 * 뷰 추가 및 연결
   * `앱이름/view.py` 에서 뷰(함수 형태) 추가하고 `앱이름/urls.py`에서 추가한 뷰 연결
 
@@ -120,8 +121,7 @@ Django tutorial 시도해보기 :sunglasses:
   ```
 
 * 템플릿 시스템: 코드로부터 디자인 분리
-  `앱이름/template/앱이름`
-  폴더 생성한 후 html 파일 이곳에 넣기
+  `앱이름/template/앱이름` 폴더 생성한 후 html 파일 이곳에 넣기
 
   ex> `polls/templates/polls/index.html`
   <br>
@@ -145,7 +145,7 @@ Django tutorial 시도해보기 :sunglasses:
 
 ---
 ## part4
-
+### 간단한 서식 처리와 제네릭 뷰
 * form으로 제출된 데이터 처리
 
   해당하는 POST 자료가 없으면 KeyError 발생시킴 -> try-except 처리 해줘야
@@ -198,7 +198,7 @@ Django tutorial 시도해보기 :sunglasses:
     ```
 ---
 ## part5
-
+### 자동화된 테스트
 * 테스트 만들기
   앱이름/tests.py 파일에 `from django.test import TestCase` 추가 후 작성
   * 각 모델이나 뷰에 대해 별도의 TestClass 작성
@@ -224,3 +224,37 @@ Django tutorial 시도해보기 :sunglasses:
   coverage report   #위 명령어에 대한 분석결과 볼 수 있다
   ```  
   참고: [coverage.py](https://coverage.readthedocs.io/en/v4.5.x/)
+---
+## part6
+### 정적파일 관리
+* 정적(static) 파일: 이미지, js, css 등
+  `앱이름/static/앱이름` 폴더 생성 후 이곳에 파일 넣는다
+  ex) `polls/static/polls/style.css`, `polls/static/polls/images/background.gif`
+  <br>
+  * 참고: static 아래에 바로 정적 파일을 넣어도 되지만 네임스페이싱을 위해 앱이름의 하위디렉토리 하나 더 둔 후 파일 넣어야 django가 쉽게 구분 가능! => 정적파일을 응용 프로그램 자체의 다른 디렉토리에 두자
+  <br>
+* 정적파일 참조: `{% static %}` 태그 이용
+  정적 파일의 절대 URL을 생성한다
+  html 파일 맨 위에 `{% load static %}` 추가해주어야 함
+  <br>
+  * 참고: 장고가 생성하지 않은 css 같은 정적 파일에는 {% static %} 템플릿 태그 사용 불가 => 상대 경로 사용해야 함
+---
+## part7
+### 관리자 폼 커스터 마이징
+* 모델 관리자 옵션 변경: `앱이름/admin.py` 수정
+  관리자 옵션 변경해야 될 때마다 '모델 어드민 클래스' 만든 다음(ex> `class QuestionAdmin(admin.ModelAdmin)`) 'admin.site.register()'에 두 번째 인수로 전달          
+
+  * 수십 개의 필드 있는 폼의 경우: field -> fieldset으로 분할
+    ```
+    fieldsets = [
+          (None,               {'fields': ['question_text']}),
+          ('Date information', {'fields': ['pub_date']}),
+      ]
+    ```  
+* ForeignKey로 연결된 객체 추가:
+  추가할 객체에 대해 '인라인 클래스' 만들고(ex> `class ChoiceInline(admin.StackedInline)`) 연결할 객체에 `inlines = [인라인클래스명]` 라인 추가
+  * 참고: admin.StackedInline는 아래로 펼쳐진 형태, admin.TabulaInline은 테이블 기반 형식     
+* 관리페이지 옵션 추가: 모델 어드민 클래스에 특정 변수들을 추가한다
+  * `list_display`: 추가할 필드를 튜플 형식으로 표시
+  * `list_filter`: 필터링 할 필드를 리스트로 표시하면 filter 사이드 바 추가됨 -> 필터링중인 필드 유형(ex> DateTimeField)에 따라 필터 유형 정해짐
+  * `search_fields`: 변경 목록 맨 위에 검색 창이 추가 -> [ ] 내 필드 검색

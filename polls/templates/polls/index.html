@@ -1,6 +1,9 @@
 {# django templates 주석 표시 #}
 {# html에서 파이썬 문법 활용 => {% %}로 감싸주기 #}
 
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css'%}">
+
 {% if latest_question_list %}
   <ul>
   {% for question in latest_question_list %}

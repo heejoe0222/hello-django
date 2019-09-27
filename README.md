@@ -63,8 +63,8 @@ Django tutorial 시도해보기 :sunglasses:
   ```
   타임존을 설정하더라도 시간이 안 맞을 수 있는데 localtime() 통해 정확한 한국시간 얻을 수 있다     
 <br>  
-* 모델 생성
 
+* 모델 생성
   장고의 내장 ORM으로 SQL을 작성하지 않아도 코드로 데이터베이스에 접근 (조회/추가/수정/삭제)
 
   > Model: 파이썬의 class 형태로 DB의 테이블과 매핑됨  
@@ -133,14 +133,13 @@ Django tutorial 시도해보기 :sunglasses:
 
   <br>
 * get_object_or_404()
-
   try-except raise Http404 로 예외 발생시키지 않아도 되는 단축 기능
 <br>
-* URL 이름공간 정하기
 
+* URL 이름공간 정하기
   앱이 여러 개일 때 앱 내의 url 구분하기 위한 것
 
-  polls/urls.py에 이름 공간 추가: ` app_name = 'polls' `
+  polls/urls.py에 이름 공간 추가: ` app_name = 'polls' ` <br>
   namespace로 나눠진 상세뷰를 가리키도록 변경: `<a href="{% url 'polls:detail' question.id %}">`
 
 ---
@@ -157,15 +156,16 @@ Django tutorial 시도해보기 :sunglasses:
   ```
 
 * F() 객체
-   1. python이 아닌 DB에서 해당 연산 처리
-   2. 쿼리 수 줄일 수 있음
-   3. 경쟁 조건(race condition) 피할 수 있음
+  1. python이 아닌 DB에서 해당 연산 처리
+  2. 쿼리 수 줄일 수 있음
+  3. 경쟁 조건(race condition) 피할 수 있음
 
   `selected_choice.votes += 1` 대신 `selected_choice.votes = F('votes') + 1` 사용
 
 
   python 코드(메모리 상) 값으로 처리하는 것이 아니라 데이터베이스에서 해당 작업을 처리하도록!
 <br>
+
 * 제너릭 뷰 사용: 코드를 재사용하자!
 
   제너릭 뷰란? 클래스로 작성되어 있는 뷰 객체를 말함
@@ -208,7 +208,6 @@ Django tutorial 시도해보기 :sunglasses:
   * 메소드의 동작을 포괄적으로 테스트하기 위해 동일 클래스에 여러 테스트 메소드 추가
   <br>
 * 테스트 실행 (터미널): `$python manage.py test polls`
-
   <br>
 * 테스트 기반 뷰 수정
   클래스 기반 뷰(`views.py`)에 get_queryset() 메소드 추가하여 적절한 정보만 보이도록 -> filter 함수 이용

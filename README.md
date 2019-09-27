@@ -64,7 +64,8 @@ Django tutorial 시도해보기 :sunglasses:
   타임존을 설정하더라도 시간이 안 맞을 수 있는데 localtime() 통해 정확한 한국시간 얻을 수 있다     
 <br>  
 
-* 모델 생성
+* 모델 생성  
+
   장고의 내장 ORM으로 SQL을 작성하지 않아도 코드로 데이터베이스에 접근 (조회/추가/수정/삭제)
 
   > Model: 파이썬의 class 형태로 DB의 테이블과 매핑됨  
@@ -79,6 +80,7 @@ Django tutorial 시도해보기 :sunglasses:
   -> Field 클래스 통해 DB의 속성에 해당되는 컬럼 생성  
   -> ForeignKey를 사용하여 Question에 Choice를 관계시킨다
 <br>
+
 * 현재 프로젝트에 앱 추가
 
   mysite/settings.py의 INSTALLED_APPS 설정에 PollsConfig 클래스 추가해준다
@@ -132,11 +134,13 @@ Django tutorial 시도해보기 :sunglasses:
     `<a href="{% url 'detail' question.id %}">`
 
   <br>
+
 * get_object_or_404()
   try-except raise Http404 로 예외 발생시키지 않아도 되는 단축 기능
 <br>
 
 * URL 이름공간 정하기
+
   앱이 여러 개일 때 앱 내의 url 구분하기 위한 것
 
   polls/urls.py에 이름 공간 추가: ` app_name = 'polls' ` <br>
@@ -156,9 +160,9 @@ Django tutorial 시도해보기 :sunglasses:
   ```
 
 * F() 객체
-  1. python이 아닌 DB에서 해당 연산 처리
-  2. 쿼리 수 줄일 수 있음
-  3. 경쟁 조건(race condition) 피할 수 있음
+1. python이 아닌 DB에서 해당 연산 처리
+2. 쿼리 수 줄일 수 있음
+3. 경쟁 조건(race condition) 피할 수 있음
 
   `selected_choice.votes += 1` 대신 `selected_choice.votes = F('votes') + 1` 사용
 
@@ -200,24 +204,31 @@ Django tutorial 시도해보기 :sunglasses:
 ## part5
 ### 자동화된 테스트
 * 테스트 만들기
+
   앱이름/tests.py 파일에 `from django.test import TestCase` 추가 후 작성
+
   * 각 모델이나 뷰에 대해 별도의 TestClass 작성
     ex) QuestionIndexViewTests, QuestionModelTests
   * 테스트 메소드 이름은 기능을 설명할 수 있게 작성
     ex) test_no_question
   * 메소드의 동작을 포괄적으로 테스트하기 위해 동일 클래스에 여러 테스트 메소드 추가
   <br>
+
 * 테스트 실행 (터미널): `$python manage.py test polls`
   <br>
+
 * 테스트 기반 뷰 수정
+
   클래스 기반 뷰(`views.py`)에 get_queryset() 메소드 추가하여 적절한 정보만 보이도록 -> filter 함수 이용
+
   * 참고: date 비교 시 사용 함수
   `gt: greater than`, `gte:greater than or equal to`, `lt: less than`, `lte: Less than or equal to`
   * 뷰 테스트 함수: `assertContains()`, `assertQuerysetEqual()`, `assertEqual()`
   <br>
 
 * 코드 커버리지 테스트
- `coverage.py` 설치 후 `manage.py` 포함하는 프로젝트 폴더 run
+
+  `coverage.py` 설치 후 `manage.py` 포함하는 프로젝트 폴더 run
   ```
   coverage run --source='.' manage.py test myapp
   coverage report   #위 명령어에 대한 분석결과 볼 수 있다
@@ -227,13 +238,17 @@ Django tutorial 시도해보기 :sunglasses:
 ## part6
 ### 정적파일 관리
 * 정적(static) 파일: 이미지, js, css 등
+
   `앱이름/static/앱이름` 폴더 생성 후 이곳에 파일 넣는다
   ex) `polls/static/polls/style.css`, `polls/static/polls/images/background.gif`
   <br>
   * 참고: static 아래에 바로 정적 파일을 넣어도 되지만 네임스페이싱을 위해 앱이름의 하위디렉토리 하나 더 둔 후 파일 넣어야 django가 쉽게 구분 가능! => 정적파일을 응용 프로그램 자체의 다른 디렉토리에 두자
   <br>
+
 * 정적파일 참조: `{% static %}` 태그 이용
+
   정적 파일의 절대 URL을 생성한다
+
   html 파일 맨 위에 `{% load static %}` 추가해주어야 함
   <br>
   * 참고: 장고가 생성하지 않은 css 같은 정적 파일에는 {% static %} 템플릿 태그 사용 불가 => 상대 경로 사용해야 함
@@ -241,7 +256,8 @@ Django tutorial 시도해보기 :sunglasses:
 ## part7
 ### 관리자 폼 커스터 마이징
 * 모델 관리자 옵션 변경: `앱이름/admin.py` 수정
-  관리자 옵션 변경해야 될 때마다 '모델 어드민 클래스' 만든 다음(ex> `class QuestionAdmin(admin.ModelAdmin)`) 'admin.site.register()'에 두 번째 인수로 전달          
+
+  관리자 옵션 변경해야 될 때마다 '모델 어드민 클래스' 만든 다음 (ex> `class QuestionAdmin(admin.ModelAdmin)`) 'admin.site.register()'에 두 번째 인수로 전달          
 
   * 수십 개의 필드 있는 폼의 경우: field -> fieldset으로 분할
     ```
@@ -251,8 +267,10 @@ Django tutorial 시도해보기 :sunglasses:
       ]
     ```  
 * ForeignKey로 연결된 객체 추가:
+
   추가할 객체에 대해 '인라인 클래스' 만들고(ex> `class ChoiceInline(admin.StackedInline)`) 연결할 객체에 `inlines = [인라인클래스명]` 라인 추가
   * 참고: admin.StackedInline는 아래로 펼쳐진 형태, admin.TabulaInline은 테이블 기반 형식     
+
 * 관리페이지 옵션 추가: 모델 어드민 클래스에 특정 변수들을 추가한다
   * `list_display`: 추가할 필드를 튜플 형식으로 표시
   * `list_filter`: 필터링 할 필드를 리스트로 표시하면 filter 사이드 바 추가됨 -> 필터링중인 필드 유형(ex> DateTimeField)에 따라 필터 유형 정해짐
